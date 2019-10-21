@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>adadad</title>
+    <style>
+        body {
+            height: 2000px;
+           
+        }
+        span {
+            color: red;
+        }
+        .red {
+            color: green;
+        }
+        p {overflow: hidden;white-space: nowrap;}
+        .fade-enter {
+            width: 0px;
+        }
+        .fade-enter-to {
+            width: 150px;
+        }
+        .fade-enter-active {
+            transition: all 1s;
+        }
+        .fade-leave {
+            width: 150px;
+        }
+        .fade-leave-to {
+            width: 0;
+        }
+        .fade-leave-active {
+            transition: all 1s;
+            
+        }
+        /*.fade-enter-active, .fade-leave-active {
+    transition: opacity 2s
+}
+.fade-enter, .fade-leave-to  {
+    opacity: 0
+}*/
+    </style>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script>
+        window.onload = function () {
+            Vue.component('child',{
+                props: {
+                    title: Number,
+                    required: true
+                },
+                prosValidate: {
+
+                },
+                template: '<h1 @click="addd">{{title}}</h1>',
+                methods: {
+                    addd () {
+                        this.$emit('change',++this.title);
+                    }
+                }
+            })
+            var Vm = new Vue({
+                el: '#el',
+                data: {
+                    one: 222,
+                    filt: '23333332',
+                    up: 'we have child',
+                    show: false
+                },
+                filters: {
+                    big: function(input,conditions) {
+                        var rega = eval('/' + conditions + '/g');
+                        return input.replace(rega,'a');
+                    }
+                },
+                
+                components: ['child'],
+                methods: {
+                    addNumber (n) {
+                        console.log(n);
+                        this.one = n;
+                    },
+                    warn (message,e) {
+                        this.show = !this.show;
+                    }
+                },
+                directives: {
+                    focus: {
+                        inserted(el,binding) {
+                            el.focus();
+                        }
+                    }
+                },
+                mounted () {
+                    window.addEventListener('keydown',function(e) {
+                        
+                    })
+                },
+                destroyed () {
+                    window.removeEventListener('keydown');
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div id = "el">
+        <p>{{filt | big('3')}}</p>
+        <p>{{up | json}}</p>
+        <button  v-on:click="warn('Form cannot be submitted yet.', $event)">ssssssss</button>
+        <child title='033'></child>
+        <input type="text" v-focus @click.right="warn"/>
+        <transition name="fade">
+            <p v-show="show">hello world;</p>
+        </transition>
+    </div>
+</body>
+</html>
